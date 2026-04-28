@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Librería Universidad Ducky</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+</head>
+<body>
+
+<div class="layout {% if not session.get('usuario') %}layout--auth{% endif %}">
+
+  {% if session.get('usuario') %}
+  <aside class="sidebar">
+    <div class="sidebar__logo">
+      <img src="{{ url_for('static', filename='img/logo.png') }}"
+           alt="Universidad Ducky"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"/>
+      <div class="sidebar__logo-fallback" style="display:none">
+        <span>🎓</span>
+      </div>
+    </div>
+  </aside>
+  {% endif %}
+
+  <div class="main-area">
+
+    {% if session.get('usuario') %}
+    <header class="topbar">
+      <div class="topbar__left">
+        <span class="topbar__menu-icon">☰</span>
+        <div class="topbar__search-wrap">
+          <form action="{{ url_for('libros') }}" method="get" class="topbar__search-form">
+            <input class="topbar__search"
+                   type="text"
+                   name="q"
+                   placeholder="Consulta libros"
+                   value="{{ request.args.get('q','') }}"/>
+            <button type="submit" class="topbar__search-btn">🔍</button>
+          </form>
+        </div>
+        <button class="topbar__filter-btn">⚙</button>
+      </div>
+      <a class="topbar__close" href="{{ url_for('logout') }}">✕</a>
+    </header>
+    {% endif %}
+
+    <main class="content">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+          <div class="alert alert--{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endwith %}
+
+      {% block content %}{% endblock %}
+    </main>
+
+  </div>
+</div>
+
+<div id="deleteModal" class="modal" style="display:none">
+  <div class="modal__backdrop" onclick="closeDeleteModal()"></div>
+  <div class="modal__box">
+    <p class="modal__text" id="deleteModalText"></p>
+    <div class="modal__actions">
+      <form id="deleteForm" method="post">
+        <button type="submit" class="btn btn--danger">Eliminar</button>
+      </form>
+      <button class="btn btn--primary" onclick="closeDeleteModal()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

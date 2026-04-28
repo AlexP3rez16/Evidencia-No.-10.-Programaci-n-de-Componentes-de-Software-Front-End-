@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="page-header page-header--detail">
+  <h1 class="detail-title">{{ book.titulo }}</h1>
+  <div class="detail-header-actions">
+    <a href="{{ url_for('libros') }}" class="btn btn--primary">← Volver</a>
+    <span class="badge badge--genre">{{ book.categoria or 'N/A' }}</span>
+  </div>
+</div>
+
+<div class="detail-meta">
+  <strong>{{ book.autor }}</strong>
+  <span class="detail-year">{{ book.anio_publicacion }}</span>
+  <span class="detail-editorial">{{ book.editorial }}</span>
+</div>
+
+<hr class="divider"/>
+
+<!-- Sinopsis -->
+<section class="detail-section">
+  <h3 class="detail-section__title">Sinposis</h3>
+  <p class="detail-section__text">{{ book.sinopsis }}</p>
+</section>
+
+<hr class="divider"/>
+
+<!-- Información adicional -->
+<section class="detail-section">
+  <h3 class="detail-section__title">Información adicional</h3>
+  <div class="detail-info-grid">
+    <p><strong>Editorial:</strong> {{ book.editorial }}</p>
+    <p><strong>Número de Copias:</strong> {{ book.num_copias }}</p>
+    <p><strong>Número de páginas:</strong> {{ book.num_paginas }}</p>
+    <p><strong>Precio:</strong> ${{ "%.2f"|format(book.precio) if book.precio else 'N/A' }}</p>
+    <p><strong>ISBN:</strong> {{ book.isbn }}</p>
+    {% if book.ubicacion %}
+    <p><strong>Ubicación en biblioteca:</strong></p>
+    {% for line in book.ubicacion.split('\n') %}
+    <p>{{ line }}</p>
+    {% endfor %}
+    {% endif %}
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- Disponibilidad -->
+<section class="detail-section">
+  <h3 class="detail-section__title">Disponibilidad</h3>
+  <div class="detail-info-grid">
+    <p><strong>Total de libros:</strong> {{ book.num_copias }} copias</p>
+    <p><strong>Libros en biblioteca:</strong> {{ disponibles }} copias</p>
+    <p><strong>Número de Copias:</strong> {{ book.num_copias }}</p>
+    <p><strong>Préstamos activos:</strong> {{ prestados }}</p>
+  </div>
+</section>
+
+{% endblock %}

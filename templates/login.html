@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="auth-page">
+  <!-- Header gold bar with logo -->
+  <div class="auth-header">
+    <div class="auth-header__logo">
+      <img src="{{ url_for('static', filename='img/logo.png') }}"
+           alt="Universidad Ducky"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+      <div class="sidebar__logo-fallback" style="display:none"><span>🎓</span></div>
+    </div>
+    <button class="auth-header__close" onclick="window.close()">✕</button>
+  </div>
+
+  <div class="auth-body">
+    <h1 class="auth-title">Libreria de la universidad<br>Ducky</h1>
+
+    <div class="card auth-card">
+      <h2 class="auth-card__title">Iniciar sesión</h2>
+
+      {% if error %}
+        <div class="alert alert--error">{{ error }}</div>
+      {% endif %}
+
+      <form method="post" action="{{ url_for('login') }}">
+        <div class="form-group">
+          <label class="form-label">Usuario (Matrícula/Nómina)</label>
+          <input class="form-input" type="text" name="usuario"
+                 placeholder="Ingresa la información" required autocomplete="username"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Contraseña</label>
+          <input class="form-input" type="password" name="contrasena"
+                 placeholder="Ingresa la información" required autocomplete="current-password"/>
+        </div>
+        <div class="form-group--link">
+          <a class="link" href="#">¿Olvidaste tu contraseña?</a>
+        </div>
+        <div class="auth-card__footer">
+          <button class="btn btn--primary btn--lg" type="submit">Iniciar sesión</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

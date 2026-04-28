@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Libros</h1>
+    <p class="page-subtitle">Pestaña para administrar los libros que se encuentran en el sistema</p>
+  </div>
+  <a href="{{ url_for('libro_nuevo') }}" class="btn btn--primary">Nuevo Libro +</a>
+</div>
+
+<div class="card table-card">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Título</th>
+        <th>Autor(es)</th>
+        <th>ISBN</th>
+        <th>Género</th>
+        <th>Copias</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for book in books %}
+      <tr>
+        <td>{{ book.titulo }}</td>
+        <td>{{ book.autor }}</td>
+        <td>{{ book.isbn }}</td>
+        <td>
+          <span class="badge badge--genre">{{ book.categoria or 'N/A' }}</span>
+        </td>
+        <td>{{ book.num_copias }}</td>
+        <td class="actions-cell">
+          <a href="{{ url_for('libro_detalle', isbn=book.isbn) }}"
+             class="btn btn--sm btn--primary">Ver detalles</a>
+          <a href="{{ url_for('libro_editar', isbn=book.isbn) }}"
+             class="btn-icon btn-icon--edit" title="Editar">✏</a>
+          <button class="btn-icon btn-icon--delete" title="Eliminar"
+                  onclick="confirmDelete('{{ book.isbn }}','{{ book.titulo|replace("'","\\'") }}')">🗑</button>
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="6" class="table__empty">No hay libros registrados</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Delete confirmation modal -->
+<div id="deleteModal" class="modal" style="display:none">
+  <div class="modal__backdrop" onclick="closeDeleteModal()"></div>
+  <div class="modal__box">
+    <p class="modal__text" id="deleteModalText"></p>
+    <div class="modal__actions">
+      <form id="deleteForm" method="post">
+        <button type="submit" class="btn btn--danger">Eliminar</button>
+      </form>
+      <button class="btn btn--primary" onclick="closeDeleteModal()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function confirmDelete(isbn, titulo) {
+  document.getElementById('deleteModalText').textContent =
+    '¿Estas seguro(a) que quieres eliminar el libro ' + titulo + '?';
+  document.getElementById('deleteForm').action = '/libros/' + isbn + '/eliminar';
+  document.getElementById('deleteModal').style.display = 'flex';
+}
+function closeDeleteModal() {
+  document.getElementById('deleteModal').style.display = 'none';
+}
+</script>
+
+{% endblock %}

@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="page-header">
+  <h1 class="page-title">
+    {% if modo == 'nuevo' %}Nuevo Libro{% else %}Edición de Libro{% endif %}
+  </h1>
+  <a href="{{ url_for('libros') }}" class="btn btn--primary">← Volver</a>
+</div>
+
+<div class="card form-card">
+  <form method="post">
+
+    <div class="form-group">
+      <label class="form-label">Título del libro</label>
+      <input class="form-input" type="text" name="titulo"
+             placeholder="Ingresa la información"
+             value="{{ book.titulo if book else '' }}" required/>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Autor</label>
+      <div class="input-with-action">
+        <input class="form-input" type="text" name="autor"
+               placeholder="Ingresa la información"
+               value="{{ book.autor if book else '' }}" required/>
+        <button type="button" class="link link--sm">Agregar otro autor</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Editorial</label>
+      <input class="form-input" type="text" name="editorial"
+             placeholder="Ingresa la información"
+             value="{{ book.editorial if book else '' }}"/>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">ISBN</label>
+      <input class="form-input" type="text" name="isbn"
+             placeholder="Ingresa la información"
+             value="{{ book.isbn if book else '' }}"
+             {% if modo == 'editar' %}readonly{% endif %} required/>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Sinopsis</label>
+      <textarea class="form-input form-textarea" name="sinopsis"
+                placeholder="Ingresa la información">{{ book.sinopsis if book else '' }}</textarea>
+    </div>
+
+    <div class="form-row form-row--3">
+      <div class="form-group">
+        <label class="form-label">Año de publicación</label>
+        <input class="form-input" type="number" name="anio"
+               placeholder="Ingresa la información" min="1000" max="2099"
+               value="{{ book.anio_publicacion if book else '' }}"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Número de páginas</label>
+        <input class="form-input" type="number" name="paginas"
+               placeholder="Ingresa la información" min="1"
+               value="{{ book.num_paginas if book else '' }}"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Precio</label>
+        <input class="form-input" type="number" name="precio"
+               placeholder="Ingresa la información" step="0.01" min="0"
+               value="{{ book.precio if book else '' }}"/>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Ubicación en biblioteca</label>
+      <textarea class="form-input form-textarea form-textarea--sm" name="ubicacion"
+                placeholder="Ingresa la información">{{ book.ubicacion if book else '' }}</textarea>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Número de copias</label>
+      <input class="form-input form-input--sm" type="number" name="copias"
+             placeholder="Ingresa la información" min="0"
+             value="{{ book.num_copias if book else '' }}"/>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Categoría</label>
+      <div class="input-with-action">
+        <input class="form-input" type="text" name="categoria"
+               placeholder="Ingresa la información"
+               value="{{ book.categoria if book else '' }}"/>
+        <button type="button" class="link link--sm">Agregar otra categoría</button>
+      </div>
+    </div>
+
+    <div class="form-footer">
+      <button type="submit" class="btn btn--primary btn--lg">Guardar libro</button>
+    </div>
+
+  </form>
+</div>
+
+{% endblock %}
