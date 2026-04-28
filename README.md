@@ -14,7 +14,7 @@ biblioteca_ducky/
 ├── static/
 │   ├── css/style.css
 │   ├── js/main.js
-│   └── img/logo.png         # Coloca aquí el logo de la universidad
+│   └── img/logo.png         # Logo de universidad
 └── templates/
     ├── base.html            # Layout base (sidebar + topbar)
     ├── login.html           # Pantalla de inicio de sesión
@@ -107,6 +107,6 @@ Abre el navegador en: **http://localhost:5000**
 
 ## Logo
 
-Coloca el logo de la universidad en:  
+logo de la universidad en:  
 `static/img/logo.png`  
-(Si no existe, se muestra un emoji 🎓 como fallback)
+
