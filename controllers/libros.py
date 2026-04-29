@@ -1,5 +1,9 @@
 from functools import wraps
-from flask import Blueprint, render_template, request, redirect, url_for, flash, session
+
+from flask import (
+    Blueprint, render_template, request, redirect, url_for, flash, session
+)
+
 import models.libro as libro_model
 
 libros_bp = Blueprint('libros', __name__, url_prefix='/libros')
@@ -17,23 +21,28 @@ def login_required(f):
 @libros_bp.route('/')
 @login_required
 def index():
-    q          = request.args.get('q', '').strip()
-    categoria  = request.args.get('categoria', '').strip()
-    estado     = request.args.get('estado', '').strip()
-    editorial  = request.args.get('editorial', '').strip()
+    q = request.args.get('q', '').strip()
+    categoria = request.args.get('categoria', '').strip()
+    estado = request.args.get('estado', '').strip()
+    editorial = request.args.get('editorial', '').strip()
 
-    books      = libro_model.get_all(q, categoria, estado, editorial)
+    books = libro_model.get_all(q, categoria, estado, editorial)
     categorias = libro_model.get_categorias()
     editoriales = libro_model.get_editoriales()
 
-    return render_template('libros.html',
-                           books=books, q=q,
-                           categorias=categorias,
-                           editoriales=editoriales,
-                           estados=libro_model.ESTADOS,
-                           filtros={'categoria': categoria,
-                                    'estado': estado,
-                                    'editorial': editorial})
+    return render_template(
+        'libros.html',
+        books=books,
+        q=q,
+        categorias=categorias,
+        editoriales=editoriales,
+        estados=libro_model.ESTADOS,
+        filtros={
+            'categoria': categoria,
+            'estado': estado,
+            'editorial': editorial,
+        },
+    )
 
 
 @libros_bp.route('/nuevo', methods=['GET', 'POST'])
@@ -58,10 +67,14 @@ def detalle(isbn):
         flash('Libro no encontrado', 'error')
         return redirect(url_for('libros.index'))
 
-    prestados   = max(0, book['num_copias'] - 2)
+    prestados = max(0, book['num_copias'] - 2)
     disponibles = book['num_copias'] - prestados
-    return render_template('libro_detalle.html', book=book,
-                           prestados=prestados, disponibles=disponibles)
+    return render_template(
+        'libro_detalle.html',
+        book=book,
+        prestados=prestados,
+        disponibles=disponibles,
+    )
 
 
 @libros_bp.route('/<isbn>/editar', methods=['GET', 'POST'])
@@ -98,15 +111,15 @@ def eliminar(isbn):
 
 def _form_to_libro(form):
     return {
-        'isbn':      form.get('isbn', '').strip(),
-        'titulo':    form.get('titulo', '').strip(),
-        'autor':     form.get('autor', '').strip(),
+        'isbn': form.get('isbn', '').strip(),
+        'titulo': form.get('titulo', '').strip(),
+        'autor': form.get('autor', '').strip(),
         'editorial': form.get('editorial', '').strip(),
-        'sinopsis':  form.get('sinopsis', '').strip(),
-        'anio':      form.get('anio') or None,
-        'paginas':   form.get('paginas') or None,
-        'precio':    form.get('precio') or None,
+        'sinopsis': form.get('sinopsis', '').strip(),
+        'anio': form.get('anio') or None,
+        'paginas': form.get('paginas') or None,
+        'precio': form.get('precio') or None,
         'ubicacion': form.get('ubicacion', '').strip(),
-        'copias':    form.get('copias') or 0,
+        'copias': form.get('copias') or 0,
         'categoria': form.get('categoria', '').strip(),
     }
