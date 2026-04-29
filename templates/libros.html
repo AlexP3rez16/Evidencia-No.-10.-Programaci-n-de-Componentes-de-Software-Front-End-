@@ -6,8 +6,40 @@
     <h1 class="page-title">Libros</h1>
     <p class="page-subtitle">Pestaña para administrar los libros que se encuentran en el sistema</p>
   </div>
-  <a href="{{ url_for('libro_nuevo') }}" class="btn btn--primary">Nuevo Libro +</a>
+  <a href="{{ url_for('libros.nuevo') }}" class="btn btn--primary">Nuevo Libro +</a>
 </div>
+
+<form method="get" action="{{ url_for('libros.index') }}" class="filter-bar">
+  <input class="form-input filter-bar__search" type="text" name="q"
+         placeholder="Buscar por título, autor o ISBN"
+         value="{{ q }}"/>
+
+  <select class="form-input filter-bar__select" name="categoria">
+    <option value="">Todas las categorías</option>
+    {% for cat in categorias %}
+      <option value="{{ cat }}" {% if filtros.categoria == cat %}selected{% endif %}>{{ cat }}</option>
+    {% endfor %}
+  </select>
+
+  <select class="form-input filter-bar__select" name="editorial">
+    <option value="">Todas las editoriales</option>
+    {% for ed in editoriales %}
+      <option value="{{ ed }}" {% if filtros.editorial == ed %}selected{% endif %}>{{ ed }}</option>
+    {% endfor %}
+  </select>
+
+  <select class="form-input filter-bar__select" name="estado">
+    <option value="">Todos los estados</option>
+    {% for est in estados %}
+      <option value="{{ est }}" {% if filtros.estado == est %}selected{% endif %}>{{ est|capitalize }}</option>
+    {% endfor %}
+  </select>
+
+  <button type="submit" class="btn btn--primary">Filtrar</button>
+  {% if q or filtros.categoria or filtros.editorial or filtros.estado %}
+    <a href="{{ url_for('libros.index') }}" class="btn btn--secondary">Limpiar</a>
+  {% endif %}
+</form>
 
 <div class="card table-card">
   <table class="table">
@@ -32,9 +64,9 @@
         </td>
         <td>{{ book.num_copias }}</td>
         <td class="actions-cell">
-          <a href="{{ url_for('libro_detalle', isbn=book.isbn) }}"
+          <a href="{{ url_for('libros.detalle', isbn=book.isbn) }}"
              class="btn btn--sm btn--primary">Ver detalles</a>
-          <a href="{{ url_for('libro_editar', isbn=book.isbn) }}"
+          <a href="{{ url_for('libros.editar', isbn=book.isbn) }}"
              class="btn-icon btn-icon--edit" title="Editar">✏</a>
           <button class="btn-icon btn-icon--delete" title="Eliminar"
                   onclick="confirmDelete('{{ book.isbn }}','{{ book.titulo|replace("'","\\'") }}')">🗑</button>

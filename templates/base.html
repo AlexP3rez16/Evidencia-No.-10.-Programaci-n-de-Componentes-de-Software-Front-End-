@@ -30,7 +30,7 @@
       <div class="topbar__left">
         <span class="topbar__menu-icon">☰</span>
         <div class="topbar__search-wrap">
-          <form action="{{ url_for('libros') }}" method="get" class="topbar__search-form">
+          <form action="{{ url_for('libros.index') }}" method="get" class="topbar__search-form">
             <input class="topbar__search"
                    type="text"
                    name="q"
@@ -41,7 +41,7 @@
         </div>
         <button class="topbar__filter-btn">⚙</button>
       </div>
-      <a class="topbar__close" href="{{ url_for('logout') }}">✕</a>
+      <a class="topbar__close" href="{{ url_for('auth.logout') }}">✕</a>
     </header>
     {% endif %}
 

@@ -5,7 +5,7 @@
   <h1 class="page-title">
     {% if modo == 'nuevo' %}Nuevo Libro{% else %}Edición de Libro{% endif %}
   </h1>
-  <a href="{{ url_for('libros') }}" class="btn btn--primary">← Volver</a>
+  <a href="{{ url_for('libros.index') }}" class="btn btn--primary">← Volver</a>
 </div>
 
 <div class="card form-card">

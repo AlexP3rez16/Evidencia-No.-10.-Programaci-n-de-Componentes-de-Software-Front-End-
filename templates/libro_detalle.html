@@ -4,7 +4,7 @@
 <div class="page-header page-header--detail">
   <h1 class="detail-title">{{ book.titulo }}</h1>
   <div class="detail-header-actions">
-    <a href="{{ url_for('libros') }}" class="btn btn--primary">← Volver</a>
+    <a href="{{ url_for('libros.index') }}" class="btn btn--primary">← Volver</a>
     <span class="badge badge--genre">{{ book.categoria or 'N/A' }}</span>
   </div>
 </div>

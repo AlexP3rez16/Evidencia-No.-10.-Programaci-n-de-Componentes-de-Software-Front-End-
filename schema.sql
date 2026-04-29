@@ -1,6 +1,6 @@
-CREATE DATABASE IF NOT EXISTS biblioteca_ducky CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+--CREATE DATABASE IF NOT EXISTS biblioteca_ducky CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-USE biblioteca_ducky;
+--USE biblioteca_ducky;
 
 CREATE TABLE IF NOT EXISTS libros (
     isbn              VARCHAR(20)      NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
 
 -- ── Usuario admin (contraseña: admin123) ─────────────────────────
 INSERT IGNORE INTO usuarios (usuario, contrasena, nombre, email) VALUES
-('admin', 'scrypt:32768:8:1$3sdXD9BVAnviYDXq$f02fcc3ae75f87c0862aa16a8fc1fb17123c580eaa9ae5b99f173f83c2ce96696e53d1800c7cbcaaca7c452c82b12a2f3dc67369070c312701e8ea37d73047ab', 'Administrador', 'admin@ducky.edu');
+('admin', 'pbkdf2:sha256:600000$pSK617XS7u8y94In$4cae02f163f8acb79be5ee441b38ece65371e8de83dc38d71f4c96bc204ef1e3', 'Administrador', 'admin@ducky.edu');
 
 -- ── Libros de prueba ─────────────────────────────────────────────
 INSERT IGNORE INTO libros (isbn, titulo, autor, editorial, sinopsis, anio_publicacion, num_paginas, precio, ubicacion, num_copias, categoria, estado) VALUES

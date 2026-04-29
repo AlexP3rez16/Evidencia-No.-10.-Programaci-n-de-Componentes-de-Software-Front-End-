@@ -23,7 +23,7 @@
         <div class="alert alert--error">{{ error }}</div>
       {% endif %}
 
-      <form method="post" action="{{ url_for('login') }}">
+      <form method="post" action="{{ url_for('auth.login') }}">
         <div class="form-group">
           <label class="form-label">Usuario (Matrícula/Nómina)</label>
           <input class="form-input" type="text" name="usuario"
