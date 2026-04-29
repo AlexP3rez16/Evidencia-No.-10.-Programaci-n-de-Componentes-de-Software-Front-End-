@@ -1,26 +1,33 @@
-# Biblioteca Universidad Ducky 🎓
+# Biblioteca Universidad Ducky
 
-Aplicación web Flask + MySQL que replica los wireframes de la librería universitaria.
+Aplicación web Flask + MySQL con arquitectura MVC que replica los wireframes de la librería universitaria.
 
 ---
 
 ## Estructura del proyecto
 
 ```
-biblioteca_ducky/
-├── app.py                   # Aplicación Flask principal
-├── schema.sql               # Script de base de datos (tablas + datos de prueba)
+Act10/
+├── app.py                      # Punto de entrada Flask, registro de blueprints
+├── db.py                       # Conexión a MySQL
+├── schema.sql                  # Script de base de datos (tablas + datos de prueba)
 ├── requirements.txt
+├── .env                        # Variables de entorno (no se sube al repo)
+├── controllers/
+│   ├── auth.py                 # Rutas de autenticación (login / logout)
+│   └── libros.py               # Rutas CRUD de libros
+├── models/
+│   ├── libro.py                # Modelo Libro
+│   └── usuario.py              # Modelo Usuario
 ├── static/
 │   ├── css/style.css
-│   ├── js/main.js
-│   └── img/logo.png         # Logo de universidad
+│   └── js/main.js
 └── templates/
-    ├── base.html            # Layout base (sidebar + topbar)
-    ├── login.html           # Pantalla de inicio de sesión
-    ├── libros.html          # Catálogo de libros
-    ├── libro_detalle.html   # Detalle de un libro
-    └── libro_form.html      # Formulario nuevo / edición
+    ├── base.html               # Layout base (sidebar + topbar)
+    ├── login.html              # Pantalla de inicio de sesión
+    ├── libros.html             # Catálogo de libros
+    ├── libro_detalle.html      # Detalle de un libro
+    └── libro_form.html         # Formulario nuevo / edición
 ```
 
 ---
@@ -28,9 +35,10 @@ biblioteca_ducky/
 ## Instalación paso a paso
 
 ### 1. Requisitos previos
+
 - Python 3.10+
 - MySQL 8.0+ o MariaDB 10.6+
-- (Opcional) Entorno virtual: `python -m venv venv && source venv/bin/activate`
+- (Opcional) Entorno virtual: `python -m venv .venv && source .venv/bin/activate`
 
 ### 2. Instalar dependencias Python
 
@@ -47,12 +55,23 @@ mysql -u root -p < schema.sql
 ```
 
 Esto crea:
-- Base de datos `biblioteca_ducky`
+- Base de datos `biblioteca_arqui`
 - Tabla `libros` con los campos del wireframe
 - Tabla `usuarios`
-- 3 libros de ejemplo
+- Registros de ejemplo
 
-### 4. Generar contraseña de admin real
+### 4. Configurar variables de entorno
+
+Crea un archivo `.env` en la raíz del proyecto:
+
+```env
+DB_HOST=localhost
+DB_USER=tu_usuario
+DB_PASSWORD=tu_contraseña
+DB_NAME=biblioteca_arqui
+```
+
+### 5. Generar contraseña de admin
 
 Abre Python y ejecuta:
 
@@ -64,17 +83,8 @@ print(generate_password_hash('admin123'))
 Copia el hash y actualiza en MySQL:
 
 ```sql
-USE biblioteca_ducky;
+USE biblioteca_arqui;
 UPDATE usuarios SET contrasena = 'HASH_AQUI' WHERE usuario = 'admin';
-```
-
-### 5. Configurar conexión MySQL en `app.py`
-
-```python
-app.config['MYSQL_HOST']     = 'localhost'
-app.config['MYSQL_USER']     = 'root'
-app.config['MYSQL_PASSWORD'] = 'tu_contraseña'
-app.config['MYSQL_DB']       = 'biblioteca_ducky'
 ```
 
 ### 6. Ejecutar la aplicación
@@ -102,11 +112,3 @@ Abre el navegador en: **http://localhost:5000**
 | Editar libro | `GET/POST /libros/<isbn>/editar` |
 | Eliminar libro | `POST /libros/<isbn>/eliminar` |
 | Cerrar sesión | `GET /logout` |
-
----
-
-## Logo
-
-logo de la universidad en:  
-`static/img/logo.png`  
-
