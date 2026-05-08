@@ -405,7 +405,7 @@ input, textarea { font-family: inherit; }
   background: transparent;
 }
 .btn-icon:hover { opacity: .7; }
-.btn-icon--edit  { color: #2563eb; }
+.btn-icon--edit  { background: #1a3a6b; color: var(--white); border-radius: 50%; }
 .btn-icon--delete { color: var(--red); }
 
 /* ================================================================
