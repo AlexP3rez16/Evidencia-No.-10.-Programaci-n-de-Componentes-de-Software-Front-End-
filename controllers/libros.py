@@ -50,12 +50,18 @@ def index():
 def nuevo():
     if request.method == 'POST':
         data = _form_to_libro(request.form)
-        try:
-            libro_model.crear(data)
-            flash('Libro guardado correctamente', 'success')
-            return redirect(url_for('libros.index'))
-        except Exception as e:
-            flash(f'Error al guardar: {e}', 'error')
+        error = _validar_libro(data)
+        if error:
+            flash(error, 'error')
+        elif libro_model.get_by_isbn(data['isbn']):
+            flash(f'Ya existe un libro con el ISBN {data["isbn"]}', 'error')
+        else:
+            try:
+                libro_model.crear(data)
+                flash('Libro guardado correctamente', 'success')
+                return redirect(url_for('libros.index'))
+            except Exception as e:
+                flash(f'Error al guardar: {e}', 'error')
     return render_template('libro_form.html', book=None, modo='nuevo')
 
 
@@ -123,3 +129,13 @@ def _form_to_libro(form):
         'copias': form.get('copias') or 0,
         'categoria': form.get('categoria', '').strip(),
     }
+
+
+def _validar_libro(data):
+    if not data['isbn']:
+        return 'El ISBN es obligatorio'
+    if not data['titulo']:
+        return 'El título es obligatorio'
+    if not data['autor']:
+        return 'El autor es obligatorio'
+    return None
